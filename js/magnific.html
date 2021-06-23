@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>フォーム</title>
+  <script type="text/javascript" src="./js/jquery-3.5.1.js"></script>
+  <script src="./js/jquery.magnific-popup.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/magnific-popup.css" />
+</head>
+
+<body>
+  <style>
+    .white-popup-block {
+      background-color: #fff;
+      width: 375px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+
+    .popup-modal-dismiss {
+      font-size: 0.8em;
+      float: right;
+    }
+
+    .container {
+      margin-top: 50px;
+    }
+
+    .table-bordered th {
+      background: #999;
+      color: #fff;
+    }
+
+    textarea {
+      width: 100%;
+    }
+  </style>
+  <script>
+    $(function () {
+      $('.popup-modal').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        focus: '#username',
+        // trueにするとモーダル外をクリックしても消えない
+        modal: false,
+        callbacks: {
+          open: function () {
+            console.log("succeed");
+            $('#test-modal > h3').text($('input[name="midashi"]').val());
+            var context = $('textarea[name="context"]').val();
+            $('#test-modal > #context').text(context);
+          }
+        }
+      });
+      $(document).on('click', '.popup-modal-dismiss', function (e) {
+        e.preventDefault();
+        $.magnificPopup.close();
+      });
+    });
+
+    function nl2br(str) {
+      return str.replace(/\r\n/g, '<br>').replace(/(\r|\n)/g, '<br>');
+    }
+  </script>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-9">
+        <h3>お問い合わせフォーム</h3>
+        <form action="#" method="POST"></form>
+        <table class="table table-bordered">
+          <tr>
+            <th>件名</th>
+            <td><input type="text" name="midashi" style="width: 400px;"></td>
+          </tr>
+          <tr>
+            <th>内容</th>
+            <td><textarea name="context" id="" cols="30" rows="10"></textarea></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <a class="popup-modal btn btn-secondary" href="#test-modal">送信</a>
+              <a class="popup-modal btn btn-secondary" href="#test-modal">プレビュー</a>
+            </td>
+          </tr>
+        </table>
+
+        <!-- モーダル部分 -->
+        <div id="test-modal" class="mfp-hide white-popup-block">
+          <h3></h3>
+          <div id="context"></div>
+          <p><a class="popup-modal-dismiss" href="#">閉じる</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

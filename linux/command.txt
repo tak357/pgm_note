@@ -1,0 +1,40 @@
+#------------------
+# rsync
+#------------------
+
+# dry run
+rsync -ahvn -e "ssh -i ~/.ssh/xxx.pem" ec2-user@ec2-xxx-xxx-xxx-xxx.us-east-2.compute.amazonaws.com:rsync_t/ ~/Desktop/rsync_t
+rsync -ahvn -e "ssh -p 3306 -i ~/.ssh/xxx.pem" ec2-user@ec2-xxx-xxx-xxx-xxx.us-east-2.compute.amazonaws.com:rsync_t/ ~/Desktop/rsync_t
+
+# 実行
+rsync -ahv -e "ssh -i ~/.ssh/xxx.pem" ec2-user@ec2-xxx-xxx-xxx-xxx.us-east-2.compute.amazonaws.com:rsync_t/ ~/Desktop/rsync_t
+
+# 参考
+https://qiita.com/bezeklik/items/22e791df7187958d76c1
+https://www.atmarkit.co.jp/ait/articles/1702/02/news031.html
+
+# 定期実行
+while sleep 1; do date; done
+while true; do date; done
+while :; do date; done
+
+# 日付をつけたテキスト
+touch result_$(date +%Y%m%d).txt
+
+
+# デスクトップの古いファイル（7日前）をoldディレクトリに退避するコマンド（1階層のみ（ディレクトリ内のファイルはmvしない））
+mkdir -p ~/Desktop/old | \
+find ~/Desktop -maxdepth 1 -type f -not -name '.localized' -mtime +7 | \
+xargs -I{} mv {} ~/Desktop/old
+
+# ディレクトリ内もmvする場合
+mkdir -p ~/Desktop/old | \
+find ~/Desktop -type f -not -name '.localized' -mtime +7 | \
+xargs -I% mv % ~/Desktop/old
+
+
+# ファイル検索してその結果をgrep1
+find . -maxdepth 1 -type f -name '2010*' | xargs -I{} grep -r -e '2020-04-17' {}
+
+# ファイル検索してその結果をgrep2
+find . -maxdepth 1 -type f -name 'error_log_202006*' | xargs -I{} grep -r -e 'curl' {}

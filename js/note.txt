@@ -1,0 +1,37 @@
+#-------------------
+undefinedの判定
+http://blog.tojiru.net/article/205007468.html
+#-------------------
+
+typeof a === "undefined"
+そこでよく使われているのがtypeofを使うやり方です。undefined値にtypeof演算子を作用させると必ず"undefined"という文字列が返るため、それと比較することで判定を行います。
+
+if (typeof a === "undefined") {
+  alert("aは未定義");
+}
+
+#---------------------
+追記：ReferenceError対策
+#---------------------
+完全に宣言されてない変数の場合、いきなり使うとReferenceErrorが発生しますね。ということは上で書いている例も文脈依存か。。
+
+// グローバル変数の存在確認には使えない
+//if (a == null) { // ReferenceError!
+//}
+
+if (typeof a === "undefined") { //これなら例外が起きない
+  //...
+}
+
+// 引数の確認とかなら使ってOK
+function hoge(a) {
+  if (a == null) {
+    //...
+  }
+}
+hoge();
+いちおうグローバルオブジェクト（要はwindow）を使えば、==nullでグローバル変数の存在確認も書けます。が、環境依存になってしまう(node.jsとかにはwindowがありません）ので、教科書的にはアウトな表現ですね。。難しいなあ…
+
+if (window.a == null) { //これならReferenceErrorは起きない
+  alert("aは未定義！");
+}

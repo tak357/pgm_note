@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <style>
+    nav {
+      position: absolute;
+      top: 50px;
+      right: 100px;
+      border: solid 1px #999;
+      margin-right: 10px;
+      padding-right: 30px;
+      border-radius: 5px;
+    }
+    body {
+      padding: 30px;
+    }
+  </style>
+  <script>
+    $(function (){
+      $("#submit").submit(function() {
+        test = $("#word").val();
+        if (!test.match(/^[a-zA-Z0-9\-]+$/)) {
+          alert(test);
+          return false;
+        }
+      })
+    });
+    $(function(){
+      $(window).scroll(function(){
+        $("nav").stop().animate({"top" : $(window).scrollTop() + 100}, 500);
+      });
+    });
+  </script>
+  <nav>
+    <ul>
+      <li>abc</li>
+      <li>abc</li>
+      <li>abc</li>
+    </ul>
+    <p>aaaa</p>
+    <p>aaaa</p>
+    <p>aaaa</p>
+  </nav>
+  <form action="index.php" method="post" id="submit">
+    <table>
+      <tr>
+        <td>テキスト</td>
+        <td><input type="text" name="word" id="word"></td>
+      </tr>
+      <tr>
+        <td>テキスト2</td>
+        <td><textarea name="" id="" cols="30" rows="10"></textarea></td>
+      </tr>
+      <tr>
+        <td><input type="radio" name="radio" value="0" id="" checked>全て</td>
+        <td><input type="radio" name="radio" value="1" id="">最新</td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <th></th>
+        <th>店名</th>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="shop_id[]" value="173" id="" checked></td>
+        <td>neaf1</td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="shop_id[]" value="174" id=""></td>
+        <td>neaf2</td>
+      </tr>
+      <tr>
+        <td colspan="2"><input type="submit" value="実行"></td>
+      </tr>
+    </table>
+  </form>
+  <button id="toggleMenuButton">アコーディオンボタン</button>
+  <div id="toggleMenu">
+    <ul>
+      <li>top</li>
+      <li>about</li>
+      <li>contact</li>
+    </ul>
+  </div>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+<p>abc</p>
+</body>
+<script>
+  /**
+   * アコーディオン
+   *
+   * @auther ao-system
+   */
+   (function(window,document){
+      var _toggleMenuButton = document.getElementById('toggleMenuButton');
+      var _toggleMenu = document.getElementById('toggleMenu');
+      var _clientH;
+      init();
+      function init() {
+          _toggleMenu.style.height = 'auto';
+          _clientH = _toggleMenu.clientHeight;
+          _toggleMenu.style.height = '0px';
+          _toggleMenuButton.addEventListener('click',function(){clickToggle();},false);
+      }
+      function clickToggle() {
+          var lastH = _toggleMenu.style.height;
+          _toggleMenu.style.height = (lastH == '' || lastH == '0px') ? _clientH + 'px' : '0px';
+      }
+  })(window,document);
+    </script>
+  
+</html>

@@ -1,0 +1,19 @@
+## 命名規則
+
+- テーブル名：複数形 小文字
+（login_records）
+
+- モデル名：単数形 アッパーキャメル
+（LoginRecord）
+
+- コントローラー名：複数形 アッパーキャメル
+（LoginRecordsController）
+
+- シーダー：単数形 アッパーキャメル
+(LoginRecordTableSeeder)
+
+- テストコード：単数形 アッパーキャメル
+(LoginRecordTest)
+
+- URL：
+login-records/{loginRecord}

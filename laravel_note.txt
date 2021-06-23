@@ -1,0 +1,469 @@
+## VSCodeに入れるプラグイン一覧
+PHP:https://qiita.com/cflat0528/items/08814378a5cf0d0c107d
+laravel:https://qiita.com/motuo/items/5c9b24606ef75535f882
+
+## composerのインストール
+参考：https://qiita.com/kakijin/items/02364adacf36410f449e
+参考：https://qiita.com/n_oshiumi/items/59ae65219e2ab664eb3f
+
+# ターミナルで以下を入力
+# Windowsなら公式ホームページからセットアップexeをダウンロードしてインストールする
+$ curl -sS https://getcomposer.org/installer | php
+
+
+########################################
+# Laravel
+########################################
+
+## インストール方法
+参考：https://qiita.com/da-sugi/items/7ee7a458aad4209bab01
+
+$ composer global require "laravel/installer"
+$ export PATH="$PATH:$HOME/.composer/vendor/bin"
+$ source ~/.bashrc
+
+## プロジェクトの作成方法
+
+$ composer create-project <プロジェクト名>
+
+# 内臓サーバーの起動方法
+# プロジェクトにディレクトリCDしてから以下コマンド
+$ php artisan serve
+
+# ホストやポートを指定して起動
+$ php artisan serve --host=127.0.0.1 --port=8000
+
+# 起動確認は以下URLをブラウザで起動
+# 停止する時はcontrol + C
+http://localhost:8000/
+
+# ルート一覧の表示
+$ php artisan route:list
+
+########################################
+# .envファイルの設定
+########################################
+# MAMPのDBの設定は以下のとおり。
+# ポートやユーザー名、パスワードはMAMPのWebStart pageに書いてある
+
+DB_CONNECTION=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=root
+DB_SOCKET=/Applications/MAMP/tmp/mysql/mysql.sock
+
+・config/database.php
+
+参考：https://qiita.com/b_a_a_d_o/items/bfafd5f94b64bfd8253e
+
+# MySQLへターミナル、コマンドプロンプトから接続する方法
+# cdでMySQLのfolderへいく、もしくはMySQLにパスを通す
+$ mysql -u root -p
+
+参考：
+http://hapisupu.com/2015/08/xampp-mysql-command-prompt/
+
+# 使用するデータベースを選択する方法
+$ use <データベース名>
+
+# Amazon S3と連携する方法
+参考：
+https://www.ritolab.com/entry/8
+
+# composerでパッケージを追加
+$ composer require league/flysystem-aws-s3-v3 ~1.0
+
+# ルーティング
+Route::get('/', 'ValiController@index');
+
+# 自己紹介入力フォームの作り方
+参考：
+https://www.ritolab.com/entry/40
+
+# DBからデータを表示する方法
+参考：
+https://www.ritolab.com/entry/49
+
+# モデルを作成する
+$ php artisan make:model <モデル名>
+$ php artisan make:model Models/frameworks
+
+# モデルとファクトリを同時に作る（以下のいずれか）
+$ php artisan make:model <モデル名> --factory
+$ php artisan make:model <モデル名> -f
+
+# frameworks.php
+
+<?php
+namespace App¥Models;
+use Illuminate¥Database¥Eloquent¥Model;
+use Illuminate¥Support¥Facades¥DB;
+
+class Frameworks extends Model{
+  protected $table = 'frameworks';  //テーブル名を指定
+  protected $guarded = array('id');
+
+  public $timestamps = false;
+
+  public function getData()
+  {
+    $data = DB::table($this->table)->get();
+    return $data;
+  }
+}
+
+# コントローラーの作成
+$ php artisan make:controller <コントローラー名>
+$ php artisan make:controller <コントローラー名> --resource
+$ php artisan make:controller SampleController
+
+<?php
+namespace App¥Http¥Controllers;
+use App¥Models¥Frameworks;
+
+class SampleController extends Controller{
+  public function model()
+  {
+    // Frameworksモデルのインスタンス化
+    $md = new Frameworks();
+
+    // データ取得
+    $data = $md->getData();
+
+    // ビューを返す
+    return view('sample.model', ['data' => $data]);
+  }
+}
+
+
+# DBの並び巡、行数指定など
+
+orderBy('id','desc')
+
+例：
+$data = DB::table($this->table)->orderBy('id','desc')->get();
+
+参考：
+limit（整数）：指定した位置からレコードを取得する
+offset（整数）：指定した数だけレコードを取得する
+
+# insert文の書き方
+
+use Illuminate¥Support¥Facades¥DB;
+
+# コントローラー
+$param = [
+    'id' => 102,
+    'name' => 'testName',
+    'type' => 9,
+];
+
+DB::table('frameworks')->insert($param);
+
+# update文の書き方
+
+use Illuminate¥Support¥Facades¥DB;
+
+public function update()
+{
+    $testData = 'update';
+
+    $param = [
+        'id'   => 999,
+        'name' => $testData,
+        'type' => 8,
+    ];
+
+    DB::table('frameworks')
+        ->where('id',106)
+        ->update($param);
+
+    return redirect('model'); //一覧へ戻るなど
+}
+# delete文の書き方
+
+use Illuminate¥Support¥Facades¥DB;
+
+~~~中略~~~
+
+DB::table('frameworks')->where('id',999)->delete();
+
+
+# フォームでエラーを返したときに入力した文字をそのまま残す方法
+# oldを使う
+
+例：
+<input type="text" class="form-control" name="title"
+value="{{ old('title') }}" />
+
+# phpunitのエラー
+参考：https://qiita.com/stoneBK7/items/fcc898f38ee161b38ef4
+
+PHP Fatal error:  Declaration of MovieTest::setUp() must be compatible with PHPUnit¥Framework¥TestCase::setUp(): void in /{途中省略}/MovieTest.php on line 5
+
+# 解決方法：
+setUp()に戻り値型の: voidの宣言を記述する
+
+protected function setUp(): void {
+   ・・・
+}
+
+# 外部キーを設定する時の注意点
+# 型を揃えておかないとエラーを吐く
+
+参考：
+https://qiita.com/ktknj/items/6a3e1936da727dbd92b3
+
+# Sequel proのSQL実行方法
+command + R
+
+◆ログイン時で挙動を変える（ヘッダーなど）
+参考：https://www.hypertextcandy.com/laravel-tutorial-authentication-part-2/
+
+# 認証（古い書き方）
+@if(Auth::check())
+  <!-- ログインしていた場合の処理 -->
+@else
+  <!-- ログインしていない場合処理 -->
+@endif
+
+※Auth::check() とは逆の働きをする guest メソッドも存在します。つまり Auth::guest() はユーザーがログインしていない場合に true を返します。
+
+# ディレクティブを利用した書き方
+@auth
+  <処理>
+@endauth
+
+@guest
+  <処理>
+@endguest
+
+# 必要に応じて認証ガードを使用することもできる
+@auth('admin')
+    <処理>
+@endauth
+
+@guest('admin')
+    <処理>
+@endguest
+
+
+# 認証チェック
+参考：
+https://www.hypertextcandy.com/laravel-tutorial-authentication-part-2/
+
+# 以下のコードで囲む
+Route::group(['middleware' => 'auth'], function() {
+    // ルート情報
+});
+
+# Laravelのプロジェクトをgit cloneした時の手順
+$ composer update
+
+参考：
+http://vdeep.net/laravel-git-clone
+
+もしくは
+# composer.lockがある場合はinstall
+$ composer install
+
+※エラー「Your requirements could not be resolved to an installable set of packages.」が出る場合は以下を。
+
+yum install --enablerepo=remi,remi-php70 php php-devel php-mbstring php-pdo php-gd
+
+# キーの生成
+$ php artisan key:generate
+
+これで.envファイルのAPP_KEYにランダムな文字列が追加されました。これをやっておくと、ユーザーのセッション情報、パスワードの暗号化をよりセキュアにすることができます。
+
+# マイグレーション
+$ php artisan migrate
+
+# seeder（DBのテストデータ挿入）を実行する
+$ php artisan db:seed
+
+もし、[ReflectionException]とかClass ‘HogeHoge’ not foundのようなエラーが出たら、次のコマンドでオートロードの定義を更新すればOK。
+
+$ composer dump-autoload
+
+# VSCodeでの整形（フォーマットコマンド）
+Option + cmd + f
+※フォーマットプラグインのインストールが必要
+
+参考：https://qiita.com/fagai/items/7f63d651cbed3664b758
+
+# bootstrapの利用方法
+# 以下をheader部で読みこむ
+
+    <link
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous"
+    >
+
+# テンプレート（blade)内でDB内のデータを制限して取得する
+{!! nl2br(e(str_limit($post->body, 200))) !!}
+
+# テンプレート（blade)内での改行表示
+{!! nl2br(e( $comment )) !!}
+
+参考：
+https://blog.hiroyuki90.com/articles/laravel-blade/
+
+参考：[Laravel] Blade での変数出力時の記法で三重波括弧「{{{}}}」があった件
+https://nobuhiroharada.com/2018/06/05/laravel-triple-curly-braces/
+
+# str_limit関数
+# Laravel6.0だと記述方法が変わる
+
+Str::limit(引数1,引数2)
+引数１は出力する文字、引数２は出力する文字数
+
+参考：
+https://readouble.com/laravel/6.0/ja/helpers.html#method-str-limit
+
+# hasの使い方
+# 入力値の存在チェック
+# リクエストに値が存在するかを判定するには、hasメソッドを使用します。hasメソッドは、リクエストに値が存在する場合に、trueを返します。
+
+if ($request->has('name')) {
+    //
+}
+
+# 配列を指定した場合、hasメソッドは指定値がすべて存在するかを判定します。
+
+if ($request->has(['name', 'email'])) {
+    //
+}
+
+# 値がリクエストに存在しており、かつ空でないことを判定したい場合は、filledメソッドを使います。
+
+if ($request->filled('name')) {
+    //
+}
+
+参考：
+https://readouble.com/laravel/5.5/ja/requests.html
+
+
+## Laravel 6.xでmake:authする方法
+参考：
+https://qiita.com/daisu_yamazaki/items/a914a16ca1640334d7a5
+
+$ composer require laravel/ui
+$ php artisan ui vue --auth
+$ npm install
+$ npm run dev
+
+## ページネーション時に検索キーワードを保持する方法
+
+{{ $items->appends(['keyword' => Request::get('keyword')])->links() }}
+※keywordは検索フォームのname
+
+## テーブルのカラム追加
+参考：https://www.yuulinux.tokyo/12554/
+
+# よくわからんが必要らしいからインストール
+$ composer require doctrine/dbal
+
+$ php artisan make:migration add_comment_website_to_users_table --table=users
+
+$ php artisan migrate
+$ php artisan db:seed --class=UsersTableSeeder
+
+## ソーシャルログイン機能実装（Socialite）
+# SSL環境がないと使えない
+参考：https://qiita.com/KeisukeKudo/items/18dd8a342a4bdd43913c
+
+########################################
+# Bladeファイル内の共通パーツを部品化する
+########################################
+
+# 埋め込みたいところに以下のコード
+@component('<bladeファイル>')
+@endcomponent
+
+例：
+@component('parts.flash_message')
+@endcomponent
+
+1. partsディレクトリを作成し、bladeファイル（例：flash_message.blade.php）を作成する
+2. 中に共通のコードを入力する
+
+########################################
+# バリデーション（Request）
+########################################
+
+1.
+$ php artisan make:request <リクエスト名>
+$ php artisan make:request CategoryRequest>
+$ vim <リクエスト名>
+
+------------------------------------------
+public function rules()
+{
+    return [
+        'new_category_title' => 'required|unique:categories,title'
+    ];
+}
+
+public function messages()
+{
+    return [
+        'new_category_title.required' => 'カテゴリー名を入力してください',
+        'new_category_title.unique' => '既存カテゴリー名と重複しています',
+    ];
+}
+------------------------------------------
+
+2. コントローラーの修正
+public function <メソッド名>(Request $request → <リクエスト名>)
+public function update(Request $request → CategoryRequest)
+
+########################################
+# Userモデルのディレクトリ移動
+# 参考：https://qiita.com/vrvr/items/4755e758f5d4b2e07579
+########################################
+
+# User.phpをModelディレクトリを移動
+
+# 名前空間を修正
+旧：namespace App;
+新：namespace App\Models;
+
+# 修正が必要なファイルは以下の通り
+/app/Http/Controllers/Auth/RegisterController.php
+旧：use App\User;
+新：use App\Models\User;
+
+/config/auth.php
+旧：'model' => App\User::class,
+新：'model' => App\Models\User::class,
+
+/database/factories/UserFactory.php
+旧：use App\User;
+新：use App\Models\User;
+
+※他にUserモデルを使用しているところがあればそちらも修正
+※App\Userなどで検索
+
+########################################
+# エラーページの修正(404)
+# 参考：https://qiita.com/M_Ishikawa/items/1f0d72fc93286109464e
+########################################
+
+1.viewsフォルダにerrorsディレクトリを作成する
+2.404.blade.phpを作成する
+3.内容を記入する
+
+
+########################################
+# PHP_EOLとは？
+########################################
+
+実行環境のOSに対応する改行コードを出力する定数。
+例えば、Windows環境の改行コードは 「\r\n(CRLF)」 Linux/Unix系、MacOS等の改行コードは「\n(LF)」
+
