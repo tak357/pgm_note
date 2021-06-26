@@ -22,6 +22,19 @@ while :; do date; done
 touch result_$(date +%Y%m%d).txt
 
 
+#------------------
+# curl
+#------------------
+
+# ログインしてクッキー取得
+curl -c cookie.txt -d "user=kuboon" -d "pass=password" "http://example.com/login"
+curl -b cookie.txt "http://exapmle.com/admin/get_data"
+
+
+#------------------
+# ユーティリティ
+#------------------
+
 # デスクトップの古いファイル（7日前）をoldディレクトリに退避するコマンド（1階層のみ（ディレクトリ内のファイルはmvしない））
 mkdir -p ~/Desktop/old | \
 find ~/Desktop -maxdepth 1 -type f -not -name '.localized' -mtime +7 | \
@@ -38,11 +51,3 @@ find . -maxdepth 1 -type f -name '2010*' | xargs -I{} grep -r -e '2020-04-17' {}
 
 # ファイル検索してその結果をgrep2
 find . -maxdepth 1 -type f -name 'error_log_202006*' | xargs -I{} grep -r -e 'curl' {}
-
-#------------------
-# curl
-#------------------
-
-# ログインしてクッキー取得
-curl -c cookie.txt -d "user=kuboon" -d "pass=password" "http://example.com/login"
-curl -b cookie.txt "http://exapmle.com/admin/get_data"
