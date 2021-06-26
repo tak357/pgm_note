@@ -31,6 +31,15 @@ curl -c cookie.txt -d "user=kuboon" -d "pass=password" "http://example.com/login
 curl -b cookie.txt "http://exapmle.com/admin/get_data"
 
 
+# qiitaにログイン
+curl -c cookie_test.txt -X POST  -d "identity=xxx@xx.co.jp" -d "password=xxxxxxxx" https://qiita.com/login
+
+# マイページとかで確認
+curl -b cookie_test.txt "https://qiita.com/xxx"
+
+# 画像のダウンロード（ファイル名そのまま）
+curl -O https://livedoor.blogimg.jp/xxx/imgs/c/0/xxx.jp
+
 #------------------
 # ユーティリティ
 #------------------
