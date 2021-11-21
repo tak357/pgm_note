@@ -54,9 +54,23 @@ mkdir -p ~/Desktop/old | \
 find ~/Desktop -type f -not -name '.localized' -mtime +7 | \
 xargs -I% mv % ~/Desktop/old
 
+#---------------------
+# 検索いろいろ
+#---------------------
 
 # ファイル検索してその結果をgrep1
 find . -maxdepth 1 -type f -name '2010*' | xargs -I{} grep -r -e '2020-04-17' {}
 
 # ファイル検索してその結果をgrep2
 find . -maxdepth 1 -type f -name 'error_log_202006*' | xargs -I{} grep -r -e 'curl' {}
+
+# ファイル名に「○○」という文字列が含まれているファイルのリストを取得。
+# 指定フォルダ直下のみ
+ls [検索対象フォルダのパス] | grep "[検索したい文字列]"
+
+# 指定フォルダ配下を再帰検索
+find [検索対象フォルダのパス] -type f -name "*[検索したい文字列]*"
+
+# ファイルを開いた中身に、「○○」という文字列が含まれているファイルのリスト。
+# 指定フォルダ配下を再帰検索
+grep [検索したい文字列] -rl [検索対象フォルダのパス]
